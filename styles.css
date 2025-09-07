@@ -1,5 +1,3 @@
-/* charity: water Brand Colors & Fonts
-
 /* ---------- Design Tokens ---------- */
 :root{
   --yellow: #F6C41C;
@@ -11,6 +9,7 @@
   --radius: 16px;
 }
 
+/* Base */
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body{
@@ -21,18 +20,8 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* Make all images responsive by default */
-img{
-  display:block;
-  max-width:100%;
-  height:auto;         /* preserve native aspect ratio */
-}
-
-.container{
-  width: min(1140px, 92vw);
-  margin-inline: auto;
-}
+img{ display:block; max-width:100%; height:auto; }  /* responsive images */
+.container{ width: min(1140px, 92vw); margin-inline: auto; }
 
 /* ---------- Header ---------- */
 .nav{
@@ -64,12 +53,12 @@ img{
   font-weight:800;
   letter-spacing:0.2px;
   line-height:1;
-  white-space:nowrap;                    /* avoid awkward wrapping on mid sizes */
+  white-space:nowrap;
 }
 @media (max-width: 480px){
   .brand-text{
     width:100%;
-    white-space:normal;                  /* allow wrap on very narrow phones */
+    white-space:normal;
     margin-left:0;
     text-align:right;
   }
@@ -78,7 +67,7 @@ img{
 /* ---------- Hero ---------- */
 .hero{
   background: transparent;               /* let brand blue show */
-  padding: 0 0 8px;                      /* small breathing room on mobile */
+  padding: 0 0 8px;
 }
 .hero-grid{
   display:grid;
@@ -89,7 +78,7 @@ img{
 }
 @media (min-width: 1024px){
   .hero-grid{
-    grid-template-columns: 1.15fr 1fr;   /* two columns on desktop/tablet landscape */
+    grid-template-columns: 1.15fr 1fr;   /* two columns on desktop */
     gap: 24px;
     padding: 28px 0 40px;
   }
@@ -101,11 +90,12 @@ img{
   color:#fff;
   border-radius:10px;
   padding: clamp(18px, 3vw, 28px);
-  min-height: clamp(260px, 40vw, 420px); /* scales smoothly across devices */
+  min-height: clamp(260px, 40vw, 420px);
   display:flex;
   flex-direction:column;
   justify-content:center;
   overflow:hidden;
+  z-index:0;                               /* base layer */
 }
 .hero-copy::after{
   content:"";
@@ -116,12 +106,19 @@ img{
   height:48%;
   background:#fff;
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  z-index:0;                               /* behind content */
+  pointer-events:none;
 }
+.hero-copy > *{
+  position:relative;                        /* ensure text sits above triangle */
+  z-index:1;
+}
+
 .cta{
   align-self:flex-start;
   border:0;
   background:var(--red-cta);
-  color:#fff;
+  color:#ffc907;                            /* CTA text color per request */
   font-weight:700;
   padding:14px 26px;
   border-radius:999px;
@@ -144,6 +141,8 @@ h1{
   margin: 6px 0 0;
   color: rgba(255,255,255,0.9);
 }
+/* “Join charity: water …” paragraph color */
+.hero-copy .impact-copy{ color:#bf6c46; }
 
 /* ---------- Media grid (images) ---------- */
 .hero-media-grid{
@@ -151,12 +150,8 @@ h1{
   gap:14px;
 }
 @media (min-width: 1024px){
-  .hero-media-grid{
-    grid-template-rows: auto auto;       /* two stacked tiles on desktop */
-  }
+  .hero-media-grid{ grid-template-rows: auto auto; }
 }
-
-/* Use aspect-ratio to prevent jumpy layouts & keep consistent crops */
 .media-main,
 .media-secondary{
   margin:0;
@@ -164,18 +159,13 @@ h1{
   overflow:hidden;
   box-shadow:0 8px 24px rgba(2,6,23,0.18);
 }
-
-/* Default (mobile) aspect ratios */
+/* keep layouts stable on all screens */
 .media-main{ aspect-ratio: 16 / 9; }
 .media-secondary{ aspect-ratio: 4 / 3; }
-
-/* Desktop/tablet: slightly taller hero image */
 @media (min-width: 1024px){
   .media-main{ aspect-ratio: 16 / 9; }
   .media-secondary{ aspect-ratio: 16 / 10; }
 }
-
-/* Fill the tile without distortion (cropped aesthetically) */
 .media-main img,
 .media-secondary img{
   width:100%;
@@ -193,25 +183,3 @@ h1{
 }
 .page-foot .container{ opacity:0.9; }
 
-/* Overrides */
-.hero-copy .impact-copy{
-  color: #bf6c46;            /* requested brand color for that paragraph */
-}
-
-.cta{
-  color: #ffc907;            /* CTA button text color */
-}
-
-/* Keep the triangle behind the copy */
-.hero-copy{
-  position: relative;          /* already set, but safe to repeat */
-  z-index: 0;                  /* base layer */
-}
-.hero-copy::after{
-  z-index: 0;                  /* triangle sits at the base */
-  pointer-events: none;        /* prevent it from blocking clicks */
-}
-.hero-copy > *{
-  position: relative;          /* create a new stacking context for children */
-  z-index: 1;                  /* copy sits above the triangle */
-}
